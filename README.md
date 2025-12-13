@@ -96,11 +96,6 @@ Puedes utilizarlo para realizar pruebas rápidas y verificar el funcionamiento d
 ---
 
 <div align="center">
-  <p>Realizado por <strong>[PON TU NOMBRE AQUÍ]</strong></p>
-  <p>Curso 2024/2025</p>
+  <p>Realizado por <strong>Lucilene Vidal Lima</strong></p>
+  <p>S2DAW</p>
 </div>
-
----
-## Autor 👨‍💻
-
-Lucilene Vidal Lima
