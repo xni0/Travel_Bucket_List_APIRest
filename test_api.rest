@@ -1,0 +1,90 @@
+### Variables globales
+@url = http://127.0.0.1:8000
+
+### Mensaje de bienvenida
+GET {{url}}/
+
+### Obtener todos los destinos (GET)
+GET {{url}}/destinations/
+
+### Obtener un destino por ID (GET)
+GET {{url}}/destinations/1
+
+### Crear un nuevo destino (POST)
+POST {{url}}/destinations/
+Content-Type: application/json
+
+{
+  "id": 9,
+  "name": "Berlín",
+  "country": "Alemania",
+  "budget": 950.0,
+  "visited": false,
+  "activities": ["Muro de Berlín", "Puerta de Brandeburgo"]
+}
+
+### Actualizar un destino existente (PUT)
+# Cambiamos Berlín a visitado
+PUT {{url}}/destinations/9
+Content-Type: application/json
+
+{
+  "id": 9,
+  "name": "Berlín",
+  "country": "Alemania",
+  "budget": 900.0,
+  "visited": true,
+  "activities": ["Muro de Berlín", "Puerta de Brandeburgo", "Comer Currywurst"]
+}
+
+### Eliminar un destino (DELETE)
+DELETE {{url}}/destinations/9
+
+# CASOS DE ERROR 
+
+### ERROR 404: Obtener un destino que no existe
+GET {{url}}/destinations/999
+
+### ERROR 404: Eliminar un destino que no existe
+DELETE {{url}}/destinations/999
+
+### ERROR 404: Actualizar un destino que no existe
+PUT {{url}}/destinations/999
+Content-Type: application/json
+
+{
+  "id": 999,
+  "name": "Fantasma",
+  "country": "Nadie",
+  "budget": 0,
+  "visited": false,
+  "activities": []
+}
+
+### ERROR 409: Crear un destino con ID repetido
+# Intentamos usar el ID 1 que ya es Tokio
+POST {{url}}/destinations/
+Content-Type: application/json
+
+{
+  "id": 1,
+  "name": "Duplicado",
+  "country": "Test",
+  "budget": 100,
+  "visited": false,
+  "activities": []
+}
+
+### ERROR 422: Validación de datos (Tipo incorrecto)
+# Enviamos "gratis" (texto) en el presupuesto (que debe ser número)
+POST {{url}}/destinations/
+Content-Type: application/json
+
+{
+  "id": 10,
+  "name": "Error Datos",
+  "country": "Test",
+  "budget": "gratis",
+  "visited": false,
+  "activities": []
+}
