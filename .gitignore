@@ -1,4 +1,6 @@
 venv/
 __pycache__/
-*.zip
-.DS_Store
+*.pyc
+*.db
+.env
+.vscode/
