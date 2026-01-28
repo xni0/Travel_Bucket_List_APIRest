@@ -1,6 +1,8 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
 
+# Conexión a la base de datos SQLite
+
 # Nombre de la base de datos física
 SQLALCHEMY_DATABASE_URL = "sqlite:///./travel.db"
 

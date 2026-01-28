@@ -5,15 +5,20 @@ from typing import List
 app = FastAPI()
 
 # MODELO DE DATOS 
+# Sirve para validar y estructurar los datos de los destinos
+# Cada destino tiene un id, nombre, país, presupuesto, estado de visita y lista de actividades
 class Destination(BaseModel):
     id: int
     name: str
     country: str
     budget: float
     visited: bool
-    activities: List[str]
+    activities: List[str] # Lista de actividades como strings
+                          # No es una entidad propia en esta versión simple
 
 # BASE DE DATOS SIMULADA 
+# Es volátil: se pierde al reiniciar el servidor
+# Es una lista que vive en la RAM del ordenador
 destinations_fake_db = [
     Destination(id=1, name="Tokio", country="Japon", budget=2500.0, visited=False, activities=["Torre de Tokio", "Shibuya", "Cruce peatonal"]),
     Destination(id=2, name="Paris", country="Francia", budget=1200.50, visited=True, activities=["Torre Eiffel", "Louvre", "Arco del Triunfo"]),
@@ -26,43 +31,68 @@ destinations_fake_db = [
 ]
 
 # ENDOPOINTS DE LA API
+# Como no hay base de datos real lo unico que se hace es manipular una lista en memoria
 @app.get("/")
 async def root():
     return {"message": "API de Gestor de Viajes funcionando"}
 
+# Endpoint para obtener todos los destinos
+# response_model indica el schema para formatear la respuesta
 @app.get("/destinations/", response_model=List[Destination])
-async def get_all_destinations():
+def get_all_destinations():
     return destinations_fake_db
 
+# Endpoint para obtener un destino por su ID
+# response_model indica el schema para formatear la respuesta
 @app.get("/destinations/{id_destination}", response_model=Destination)
-async def get_destination_by_id(id_destination: int):
-    return await search_destination(id_destination)
+def get_destination_by_id(id_destination: int):
+    # Reutilizo la función auxiliar para buscar el destino
+    return search_destination(id_destination)
 
+# Endpoint para crear un nuevo destino
+# response_model indica el schema para formatear la respuesta
 @app.post("/destinations/", response_model=Destination, status_code=201)
-async def add_destination(destination: Destination):
+def add_destination(destination: Destination):
     if any(dest_stored.id == destination.id for dest_stored in destinations_fake_db):
         raise HTTPException(status_code=409, detail="Ese ID de destino ya está en uso")
+    # Agrego el nuevo destino a la "base de datos"
     destinations_fake_db.append(destination)
     return destination
 
+# Endpoint para actualizar un destino existente
+# response_model indica el schema para formatear la respuesta
 @app.put("/destinations/{id_destination}", response_model=Destination)
-async def update_destination(id_destination: int, destination: Destination):
+def update_destination(id_destination: int, destination: Destination):
+    # Busco el destino por ID y lo actualizo
+    # recorro la lista de destinos
+    # uso enumarate para obtener el índice en la lista 
+    # ya que necesito reemplazar el objeto completo, no solo modificarlo
+    # si usara for dest in destinations_fake_db: no tendría forma de saber el índice
     for index, dest_stored in enumerate(destinations_fake_db):
         if dest_stored.id == id_destination:
+            # para mantener el mismo ID
             destination.id = id_destination
+            # reemplazo el destino en la lista
             destinations_fake_db[index] = destination
             return destination
     raise HTTPException(status_code=404, detail=f"Destino con id {id_destination} no encontrado")
 
+# Endpoint para eliminar un destino por su ID
 @app.delete("/destinations/{id_destination}")
-async def delete_destination(id_destination: int):
+def delete_destination(id_destination: int):
+    # Recorro la lista de destinos para encontrar el que coincida con el ID
+    # uso enumerate para obtener el índice y poder eliminarlo
     for index, dest_stored in enumerate(destinations_fake_db):
         if dest_stored.id == id_destination:
+            # elimino el destino de la lista
+            # hago .pop para eliminar por índice
             destinations_fake_db.pop(index)
             return {"message": f"Destino con id {id_destination} eliminado correctamente"}
     raise HTTPException(status_code=404, detail="Destino no encontrado")
 
-async def search_destination(id: int):
+# Función auxiliar para buscar un destino por ID
+def search_destination(id: int):
+    # Recorro la lista de destinos buscando el ID
     for dest in destinations_fake_db:
         if dest.id == id:
             return dest
