@@ -28,10 +28,13 @@ class Activity(Base):
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, index=True)
     cost = Column(Float, default=0.0) 
+
+    duration_minutes = Column(Integer, default=60) # Duración estimada
+    category = Column(String, default="Turismo")   # Por ejemplo: Gastronomía, Aventura, Cultura
+    requires_booking = Column(Boolean, default=False) # ¿Necesita reserva?
     
     # Foreign Key para vincular con destino
     destination_id = Column(Integer, ForeignKey("destinations.id"))
 
     # Relación inversa con destino
-    # Me permite acceder al destino de una actividad sin hacer joins manuales
     destination = relationship("Destination", back_populates="activities")

@@ -5,41 +5,6 @@ from typing import List
 
 app = FastAPI()
 
-
-# CONFIGURACIÓN DE CORS (AÑADIDO PARA LA PRÁCTICA DE REACT)
-# Esto permite que mi frontend en el puerto 5173 hable con este backend
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],  # Permite conectar desde cualquier origen (ej: localhost:5173)
-    allow_credentials=True,
-    allow_methods=["*"],  # Permite todos los métodos (GET, POST, PUT, DELETE)
-    allow_headers=["*"],
-)
-
-
-# SECCIÓN USUARIOS (AÑADIDO PARA LA PRÁCTICA DE REACT)
-
-# Modelo de Usuario
-class User(BaseModel):
-    id: int
-    name: str
-    surname: str
-    email: str
-
-# Base de datos simulada de usuarios
-users_fake_db = [
-    User(id=1, name="Vicent", surname="Foo", email="vicent@example.com"),
-    User(id=2, name="Lucilene", surname="Bar", email="lucilene@example.com"),
-    User(id=3, name="Pepe", surname="Gotera", email="pepe@example.com"),
-]
-
-# Endpoint para obtener usuarios (Lo que pide tu práctica de React)
-@app.get("/users", response_model=List[User])
-def get_users():
-    return users_fake_db
-
-# SECCIÓN DESTINOS (TU CÓDIGO ORIGINAL CON TUS COMENTARIOS)
-
 # MODELO DE DATOS 
 # Sirve para validar y estructurar los datos de los destinos
 # Cada destino tiene un id, nombre, país, presupuesto, estado de visita y lista de actividades

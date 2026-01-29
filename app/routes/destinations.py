@@ -3,8 +3,9 @@ from sqlalchemy.orm import Session
 from typing import List
 
 from app.database.database import get_db
-from app.models import models
+from app.models.models import Destination
 from app.schemas import schemas
+from app.models import models  
 
 # Aqui conecto las peticiones del usuario HTTP con la base de datos (SQLAlchemy)
 
@@ -48,7 +49,7 @@ def create_destination(destination: schemas.DestinationCreate, db: Session = Dep
     # Creo un nuevo objeto Destination a partir de los datos recibidos
     # destination.model_dump() convierte el schema Pydantic en un dict
     # ** descompone el dict en argumentos clave=valor para el constructor
-    new_dest = models.Destination(**destination.model_dump())
+    new_dest = Destination(**destination.model_dump())
     db.add(new_dest)
     db.commit()
     db.refresh(new_dest)
@@ -61,8 +62,10 @@ def create_destination(destination: schemas.DestinationCreate, db: Session = Dep
 # destination_id: ID del destino a actualizar
 # updated_dest: datos actualizados del destino (schema DestinationCreate)
 def update_destination(destination_id: int, updated_dest: schemas.DestinationCreate, db: Session = Depends(get_db)):
+    print (destination_id)
     # Consulta para buscar el destino por ID
-    dest_query = db.query(models.Destination).filter(models.Destination.id == destination_id)
+    dest_query = db.query(Destination).filter(Destination.id == destination_id)
+    print (dest_query)
     # Obtengo el destino encontrado
     db_dest = dest_query.first()
     

@@ -1,7 +1,7 @@
 from pydantic import BaseModel, ConfigDict
 from typing import List, Optional
 
-# Aqui se realiza la validación de datos para las actividades
+# Aqui se realiza la validación de datos - Pydantic - para las actividades
 # SCHEMAS PARA ACTIVIDADES
 
 # Creo 3 clases porque uso diferentes datos en cada caso:
@@ -11,23 +11,26 @@ from typing import List, Optional
 class ActivityBase(BaseModel):
     name: str
     cost: float = 0.0
+    duration_minutes: int = 60
+    category: str = "Turismo"
+    requires_booking: bool = False
 
-# Copia de ActivityBase, ya que para crear una actividad
-# no necesito datos adicionales
-# Es como el ticket de entrada (Lo que envia el usuario)
 class ActivityCreate(ActivityBase):
     pass
 
-# Respuesta al crear o consultar una actividad
-# Es como el ticket de salida (Lo que recibe el usuario)
+# Esquema para actualizaciones parciales
+class ActivityUpdate(BaseModel):
+    name: Optional[str] = None
+    cost: Optional[float] = None
+    duration_minutes: Optional[int] = None
+    category: Optional[str] = None
+    requires_booking: Optional[bool] = None
+
 class ActivityResponse(ActivityBase):
     id: int
     destination_id: int
 
-    # La magia: permite crear el objeto desde un modelo ORM
-    # Ya que SQLAlchemy devuelve objetos de sus modelos
-    # y Pydantic por defecto no sabe cómo manejarlos (Solo dicts/JSON)
-    model_config = ConfigDict(from_attributes=True) 
+    model_config = ConfigDict(from_attributes=True)
 
 # SCHEMAS PARA DESTINOS 
 class DestinationBase(BaseModel):
