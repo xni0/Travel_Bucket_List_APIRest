@@ -1,0 +1,21 @@
+services:
+  api:
+    build: .
+    ports:
+      - "80:80"
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: postgresql://app:12345678AZARQUIEL@db:5432/apiusers
+  
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: app
+      POSTGRES_PASSWORD: 12345678AZARQUIEL
+      POSTGRES_DB: apiusers
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:

@@ -1,14 +1,13 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
+from os import getenv
 
-# Conexión a la base de datos SQLite
 
-# Nombre de la base de datos física
-SQLALCHEMY_DATABASE_URL = "sqlite:///./travel.db"
+DATABASE_URL= getenv("DATABASE_URL")
 
 # connect_args es necesario solo para SQLite
 engine = create_engine(
-    SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False}
+    DATABASE_URL
 )
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)

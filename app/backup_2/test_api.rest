@@ -1,0 +1,51 @@
+@url = http://localhost:8000
+
+### 1. Verify server is running (Root)
+GET {{url}}/
+
+### 2. Get all users
+GET {{url}}/users
+
+### 3. Get a specific user (ID: 1)
+GET {{url}}/users/1
+
+### 4. Try to get a non-existent user (404 Error test)
+GET {{url}}/users/999
+
+### 5. Create a new user
+POST {{url}}/users
+Content-Type: application/json
+
+{
+    "name": "Laura",
+    "surname": "Gómez",
+    "email": "laura.gomez@example.com",
+    "age": 28
+}
+
+### 6. Create another user (omitting age, to test Optional field)
+POST {{url}}/users
+Content-Type: application/json
+
+{
+    "name": "Carlos",
+    "surname": "Sainz",
+    "email": "carlos@racing.com"
+}
+
+### 7. Delete user with ID 1 (Vicent)
+DELETE {{url}}/users/1
+
+### 8. Verify the list again (Vicent should be gone, Laura and Carlos present)
+GET {{url}}/users
+
+### 9. Update an existing user (PUT)
+PUT {{url}}/users/1
+Content-Type: application/json
+
+{
+    "name": "Vicent",
+    "surname": "Updated",
+    "email": "vicent.new@example.com",
+    "age": 31
+}

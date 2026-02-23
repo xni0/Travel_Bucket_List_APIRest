@@ -21,15 +21,70 @@ class Destination(BaseModel):
 # Es volátil: se pierde al reiniciar el servidor
 # Es una lista que vive en la RAM del ordenador
 destinations_fake_db = [
-    Destination(id=1, name="Tokio", country="Japon", budget=2500.0, visited=False, activities=["Torre de Tokio", "Shibuya", "Cruce peatonal"]),
-    Destination(id=2, name="Paris", country="Francia", budget=1200.50, visited=True, activities=["Torre Eiffel", "Louvre", "Arco del Triunfo"]),
-    Destination(id=3, name="Nueva York", country="USA", budget=3000.0, visited=False, activities=["Central Park", "Estatua de la Libertad", "Times Square"]),
-    Destination(id=4, name="Roma", country="Italia", budget=1500.0, visited=True, activities=["Coliseo", "Vaticano", "Fontana di Trevi"]),
-    Destination(id=5, name="Rio de Janeiro", country="Brasil", budget=2200.0, visited=False, activities=["Cristo Redentor", "Copacabana", "Pan de Azúcar"]),
-    Destination(id=6, name="Sidney", country="Australia", budget=3500.0, visited=False, activities=["Opera House", "Bondi Beach", "Harbour Bridge"]),
-    Destination(id=7, name="Machu Picchu", country="Peru", budget=1800.0, visited=True, activities=["Ruta Inca", "Templo del Sol", "Ver llamas"]),
-    Destination(id=8, name="El Cairo", country="Egipto", budget=1100.0, visited=False, activities=["Pirámides de Giza", "Esfinge", "Museo Egipcio"]),
-]
+    Destination(
+        id=1, 
+        name="Tokio", 
+        country="Japon", 
+        budget=2500.0, 
+        visited=False, 
+        activities=["Torre de Tokio", "Shibuya", "Cruce peatonal"]
+    ),
+    Destination(
+        id=2, 
+        name="Paris", 
+        country="Francia", 
+        budget=1200.50, 
+        visited=True, 
+        activities=["Torre Eiffel", "Louvre", "Arco del Triunfo"]
+    ),
+    Destination(
+        id=3, 
+        name="Nueva York", 
+        country="USA", 
+        budget=3000.0, 
+        visited=False, 
+        activities=["Central Park", "Estatua de la Libertad", "Times Square"]
+    ),
+    Destination(
+        id=4, 
+        name="Roma", 
+        country="Italia", 
+        budget=1500.0, 
+        visited=True, 
+        activities=["Coliseo", "Vaticano", "Fontana di Trevi"]
+    ),
+    Destination(
+        id=5, 
+        name="Rio de Janeiro", 
+        country="Brasil", 
+        budget=2200.0, 
+        visited=False, 
+        activities=["Cristo Redentor", "Copacabana", "Pan de Azúcar"]
+    ),
+    Destination(
+        id=6, 
+        name="Sidney", 
+        country="Australia", 
+        budget=3500.0, 
+        visited=False, 
+        activities=["Opera House", "Bondi Beach", "Harbour Bridge"]
+    ),
+    Destination(
+        id=7, 
+        name="Machu Picchu", 
+        country="Peru", 
+        budget=1800.0, 
+        visited=True, 
+        activities=["Ruta Inca", "Templo del Sol", "Ver llamas"]
+    ),
+    Destination(
+        id=8, 
+        name="El Cairo", 
+        country="Egipto", 
+        budget=1100.0, 
+        visited=False, 
+        activities=["Pirámides de Giza", "Esfinge", "Museo Egipcio"]
+    ),]
 
 # ENDOPOINTS DE LA API
 # Como no hay base de datos real lo unico que se hace es manipular una lista en memoria

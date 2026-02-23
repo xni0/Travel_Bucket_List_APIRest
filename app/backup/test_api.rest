@@ -1,0 +1,47 @@
+### Variables globales
+@url = http://127.0.0.1:8000
+@dest_id = 1
+@act_id = 1
+
+### PRUEBAS DE DESTINOS 
+
+
+### Obtener todos los destinos
+GET {{url}}/destinations/
+
+### 1. Crear Destino: Tokio
+POST {{url}}/destinations/
+Content-Type: application/json
+
+{
+  "id":9,
+  "name": "Madrid",
+  "country": "España",
+  "budget": 2500.0,
+  "visited": false,
+  "activities": []
+}
+
+###
+GET {{url}}/destinations/
+
+
+### ERROR 422: Validación fallida (coste como texto)
+POST {{url}}/destinations/{{dest_id}}/activities/
+Content-Type: application/json
+
+{
+  "name": "Error de validación",
+  "cost": "caro",
+  "duration_minutes": 60,
+  "category": "Test",
+  "requires_booking": false
+}
+
+### ERROR 404: Actualizar actividad que no existe
+PUT {{url}}/activities/999
+Content-Type: application/json
+
+{
+  "name": "Nombre nuevo"
+}
