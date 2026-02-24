@@ -1,101 +1,96 @@
-# ✈️ Travel Bucket List API
+# ✈️ Travel Bucket List API (v2.0 - Edición Docker & DB)
 
 ![FastAPI](https://img.shields.io/badge/FastAPI-005571?style=for-the-badge&logo=fastapi)
-![Python](https://img.shields.io/badge/Python-3.10+-3776AB?style=for-the-badge&logo=python&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
 ![Status](https://img.shields.io/badge/Estado-Terminado-success?style=for-the-badge)
 
-> **Práctica 3.1 - Desarrollo Web en Entorno Servidor** > Una API REST completa para gestionar tus destinos de viaje soñados, creada como base para futuros proyectos Frontend.
+> **Práctica 3.1 - Desarrollo Web en Entorno Servidor**
+> API REST profesional con persistencia en base de datos relacional, contenerizada y desplegada en la nube.
 
 ---
 
 ## 📋 Descripción del Proyecto
 
-Este proyecto implementa una **API RESTful** utilizando el framework **FastAPI**. Simula un backend para una aplicación de viajes (**"Bucket List"**) donde los usuarios pueden gestionar ciudades que quieren visitar o que ya han visitado.
+Esta evolución de la API de viajes deja atrás el almacenamiento volátil para implementar una arquitectura robusta basada en **PostgreSQL**. Permite gestionar destinos y actividades turísticas de forma persistente, con validación de datos estricta y control de versiones de la base de datos.
 
-### 🌟 ¿Por qué este tema?
-He elegido el dominio de **"Viajes"** porque permite una gran riqueza de datos visuales para el futuro desarrollo en la asignatura de *Desarrollo Web en Entorno Cliente (DWEC)*:
-* ✅ **Booleanos:** Para marcar destinos como "Visitados" (checkboc).
-* 💰 **Números:** Para cálculos de presupuestos totales.
-* 📋 **Listas:** Para gestionar actividades turísticas por cada ciudad.
+### 🌟 Mejoras de esta versión
+* 🗄️ **Persistencia Real:** Migración total de listas de Python/SQLite a **PostgreSQL**.
+* 🐳 **Contenerización:** Despliegue unificado mediante **Docker** y **Docker Compose**.
+* 🔄 **Migraciones:** Gestión de esquemas de base de datos automatizada con **Alembic**.
+* ☁️ **Cloud:** Despliegue continuo configurado en **Render**.
+* 🔐 **Seguridad:** Gestión de credenciales mediante variables de entorno (`.env`).
 
 ---
 
 ## 🛠️ Tecnologías Utilizadas
 
-* **Lenguaje:** Python 3
 * **Framework:** FastAPI
-* **Servidor:** Uvicorn
-* **Validación de datos:** Pydantic
+* **Base de Datos:** PostgreSQL
+* **ORM:** SQLAlchemy
+* **Migraciones:** Alembic
+* **Contenedores:** Docker & Docker Compose
+* **Entornos:** Python-Dotenv
 
 ---
 
-## 🚀 Instalación y Puesta en Marcha
+## 🚀 Instalación y Puesta en Marcha (Local)
 
-Sigue estos pasos para ejecutar el proyecto en tu máquina local:
+La forma más sencilla de ejecutar el proyecto es utilizando **Docker Desktop**:
 
-### 1. Clonar o descomprimir el proyecto
-Ubícate en la carpeta del proyecto desde tu terminal.
-
-### 2. Crear y activar el entorno virtual
-Es recomendable usar un entorno aislado para instalar las dependencias.
-
-```bash
-# En Windows
-python -m venv venv
-venv\Scripts\activate
-
-# En Mac/Linux
-python3 -m venv venv
-source venv/bin/activate
-```
-
-### 3. Instalar dependencias
+### 1. Clonar el proyecto y configurar entorno
+Crea un archivo `.env` en la raíz del proyecto con la siguiente configuración:
+```env
+DATABASE_URL=postgresql://app:12345678AZARQUIEL@localhost:5432/apiusers
+ENV=development
+````
+### 2. Levantar los servicios
+Ejecuta el siguiente comando para levantar la API y la Base de Datos automáticamente:
 
 ```bash
-pip install -r requirements.txt
-```
-
-### 4. Ejecutar dependencias
+docker compose up --build
+````
+### 3. Aplicar Migraciones
+Una vez levantados los contenedores, sincroniza las tablas de la base de datos para crear la estructura necesaria:
 
 ```bash
-uvicorn main:app --reload
-```
-🎉 **¡Listo!** La API estará corriendo en: `http://127.0.0.1:8000`
+# Usando el entorno virtual local
+python -m alembic upgrade head
+````
+🎉 **API disponible en:** [http://localhost:80/docs](http://localhost:80/docs)
 
 ---
 
-## 📖 Documentación de la API
+## 🌐 Despliegue en Producción
+El proyecto está desplegado y operativo en **Render**. La base de datos de producción se actualiza automáticamente mediante un comando de *Pre-deploy* que ejecuta **Alembic** antes de cada lanzamiento.
 
-FastAPI genera documentación automática e interactiva. Una vez iniciado el servidor, visita cualquiera de estos enlaces en tu navegador:
-
-* **Swagger UI (Recomendado):** [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)  
-  *Permite probar los endpoints directamente desde el navegador.*
-* **ReDoc:** [http://127.0.0.1:8000/redoc](http://127.0.0.1:8000/redoc)
+🔗 **URL del Proyecto:** [https://travel-bucket-list-apirest.onrender.com/docs](https://travel-bucket-list-apirest.onrender.com/docs)
 
 ---
 
-## 🔌 Endpoints Disponibles
-
-La API cuenta con las operaciones CRUD completas:
+## 🔌 Endpoints Destacados
+Además de las operaciones CRUD habituales, la API gestiona relaciones y persistencia avanzada:
 
 | Método | Endpoint | Descripción |
 | :--- | :--- | :--- |
-| `GET` | `/destinations/` | Obtiene la lista completa de destinos. |
-| `GET` | `/destinations/{id}` | Obtiene los detalles de un destino específico por su ID. |
-| `POST` | `/destinations/` | Crea un nuevo destino (Valida que el ID no esté duplicado). |
-| `PUT` | `/destinations/{id}` | Actualiza la información completa de un destino existente. |
-| `DELETE` | `/destinations/{id}` | Elimina un destino de la lista. |
+| **GET** | `/destinations/` | Lista todos los destinos con sus actividades relacionadas. |
+| **POST** | `/destinations/` | Crea un nuevo destino (Persistente en PostgreSQL). |
+| **PUT** | `/destinations/{id}` | Actualización total de los datos de un destino. |
+| **DELETE** | `/destinations/{id}` | Borrado físico del registro en la base de datos. |
 
 ---
 
-## 🧪 Pruebas
+## ⚙️ Estructura de Entornos
+El sistema detecta automáticamente el contexto de ejecución para configurar la conexión:
 
-Se incluye un fichero llamado `test_api.rest`. 
-Puedes utilizarlo para realizar pruebas rápidas y verificar el funcionamiento de la API directamente desde **VS Code** si tienes instalada la extensión **REST Client**.
+* **Desarrollo:** Utiliza el archivo `.env` local y conecta a `localhost`.
+* **Producción:** Utiliza las variables de entorno configuradas en el panel de **Render** para conectar a la base de datos interna.
 
 ---
 
 <div align="center">
   <p>Realizado por <strong>Lucilene Vidal Lima</strong></p>
-  <p>S2DAW</p>
+  <p>S2DAW - IES Azarquiel</p>
 </div>
+
+
