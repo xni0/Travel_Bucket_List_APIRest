@@ -1,20 +1,31 @@
+import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
-from os import getenv
+from dotenv import load_dotenv
 
 
-DATABASE_URL= getenv("DATABASE_URL")
+load_dotenv()
 
-# connect_args es necesario solo para SQLite
-engine = create_engine(
-    DATABASE_URL
-)
+
+DATABASE_URL = os.getenv("DATABASE_URL")
+
+
+if DATABASE_URL and DATABASE_URL.startswith("postgres://"):
+    DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
+
+
+if not DATABASE_URL:
+    raise ValueError("ERROR: La variable de entorno DATABASE_URL no está configurada.")
+
+engine = create_engine(DATABASE_URL)
+
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
+
 Base = declarative_base()
 
-# Dependencia para obtener la sesión en cada petición
+
 def get_db():
     db = SessionLocal()
     try:
